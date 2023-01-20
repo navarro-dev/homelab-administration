@@ -12,4 +12,4 @@ Considerations when creating an Ubuntu Server 22.04 virtual machine on ESXi (fre
 
 - Select _minimized_ Ubuntu version
 - Install OpenSSH server
-    + Retrive public key from GitHub
+    + Retrieve public key from GitHub
