@@ -1,0 +1,6 @@
+---
+  - hosts: pihole
+    become: yes
+    tasks:
+    - name: Update Pihole to latest version
+      command: pihole -up

@@ -1,0 +1,14 @@
+---
+  - hosts: initserver
+    become: yes
+    tasks:
+    - name: Update cache 
+      apt:
+       update_cache: yes     
+    - name: Upgrade all packages on servers
+      apt: 
+        name: "*"
+        state: latest
+    - name: set timezone
+      timezone:
+        name: America/Chicago
