@@ -4,7 +4,12 @@
     tasks:
     - name: Update cache 
       apt:
-       update_cache: yes     
+       update_cache: yes
+    - name: Install specified system packages
+      apt:
+        pkg:
+          - jq
+        state: latest
     - name: Upgrade all packages on servers
       apt: 
         name: "*"
