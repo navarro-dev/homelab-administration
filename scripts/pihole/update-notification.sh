@@ -3,7 +3,7 @@
 # Functions
 
 #######################
-# Takes Three arguments: local_version and remote_version
+# Takes 2 arguments: local_version and remote_version
 #
 # Checks if the 2 versions match as a string value
 #   - If same, returns a 0 for TRUE
@@ -24,13 +24,6 @@ compareVersions() {
     else
         false
     fi
-}
-
-buildURL() {
-    local base_url="${1}"
-    local url_path="${2}"
-
-    echo "${1}${2}"
 }
 
 # Variables
@@ -62,16 +55,13 @@ compareVersions "${FTL_VERSION:=N/A}" "${GITHUB_FTL_VERSION:=N/A}"
 new_ftl_version=$?
 
 if [ $new_core_version -eq 1 ]; then 
-    core_changelog_url=$(buildURL $CORE_BASE_URL ${GITHUB_CORE_VERSION:=N/A})
-    sendPiHoleDiscordMessage "Core" "$core_changelog_url" "${GITHUB_CORE_VERSION:=N/A}"
+    sendPiHoleDiscordMessage "Core" "$CORE_BASE_URL" "${GITHUB_CORE_VERSION:=N/A}"
 fi
 
 if [ $new_web_version -eq 1 ]; then 
-    web_changelog_url=$(buildURL $ADMINLTE_BASE_URL ${GITHUB_WEB_VERSION:=N/A})
-    sendPiHoleDiscordMessage "Web Admin" "$web_changelog_url" "${GITHUB_WEB_VERSION:=N/A}"
+    sendPiHoleDiscordMessage "Web Admin" "$ADMINLTE_BASE_URL" "${GITHUB_WEB_VERSION:=N/A}"
 fi
 
 if [ $new_web_version -eq 1 ]; then 
-    ftl_changelog_url=$(buildURL $FTL_BASE_URL ${GITHUB_FTL_VERSION:=N/A})
-    sendPiHoleDiscordMessage "Web Admin" "$ftl_changelog_url" "${GITHUB_FTL_VERSION:=N/A}"
+    sendPiHoleDiscordMessage "Web Admin" "$FTL_BASE_URL" "${GITHUB_FTL_VERSION:=N/A}"
 fi
