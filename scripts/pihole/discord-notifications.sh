@@ -3,7 +3,7 @@
 # Required system packages: jq
 
 # Discord Webhook
-url="https://discord.com/api/webhooks/1068580837202874398/56dWveDtyprIJdBMQqmO1BnbjzRb0lQ1KQMFq60pf3OUxB8f4vr4i9C_lCxcF1_7r5i9"
+url="<enter channel webhook>" #https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks
 
 # Functions
 
