@@ -11,14 +11,14 @@
         group: root
     - name: Copy file with owner and permission
       ansible.builtin.copy:
-        src: '../scripts/pihole/{{ item.src }}'
+        src: '../scripts/{{ item.src }}'
         dest: '{{ item.dest }}'
         mode: '0755'
         owner: root
         group: root
       loop:
-        - { src: update-notification.sh, dest: /opt/pihole-custom/update-notification.sh }
-        - { src: discord-notifications.sh, dest: /opt/pihole-custom/discord-notifications.sh }
+        - { src: pihole/update-notification.sh, dest: /opt/pihole-custom/update-notification.sh }
+        - { src: discord/discord-notifications.sh, dest: /opt/pihole-custom/discord-notifications.sh }
     - name: Creates a cron file under /etc/cron.d
       ansible.builtin.cron:
         name: Send Discord notification if new version of Pi-hole is available
