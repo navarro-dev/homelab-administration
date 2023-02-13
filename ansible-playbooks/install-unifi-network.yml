@@ -1,0 +1,72 @@
+---
+- hosts: unifi
+  become: yes
+  tasks:
+  - name: Install required system packages
+    apt:
+      pkg:
+        - gpg
+        - ca-certificates
+        - apt-transport-https
+      state: latest
+      update_cache: true
+
+  - name: Install a .deb package from the internet
+    ansible.builtin.apt:
+      deb: http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+      state: present
+
+  - name: Import Unifi key from url
+    ansible.builtin.apt_key:
+      state: present
+      url: https://dl.ui.com/unifi/unifi-repo.gpg
+      keyring: "/etc/apt/trusted.gpg.d/unifi-repo.gpg" 
+
+  - name: Import MongoDB key from url
+    ansible.builtin.apt_key:
+      state: present
+      url: https://www.mongodb.org/static/pgp/server-3.6.asc
+      keyring: "/etc/apt/trusted.gpg.d/mongodb.gpg"
+
+  - name: Add Unifi repository
+    ansible.builtin.apt_repository:
+      state: present
+      filename: 100-ubnt-unifi
+      repo: "deb https://www.ui.com/downloads/unifi/debian stable ubiquiti"
+      update_cache: true
+
+  - name: Add MongoDB repository
+    ansible.builtin.apt_repository:
+      state: present
+      filename: mongodb-org-3.6
+      repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/3.6 multiverse"
+      update_cache: true
+
+  - name: Install java
+    apt:
+      name: openjdk-11-jdk
+      state: present
+
+  - name: Install MongoDB
+    apt:
+      name: mongodb-org
+      state: present
+
+  - name: Install Unifi Network
+    apt:
+      name: unifi
+      state: latest
+
+  - name: daemon-reload to pick up config changes
+    ansible.builtin.systemd:
+      daemon_reload: yes
+
+  - name: Start Unifi Network
+    ansible.builtin.systemd:
+      name: mongod
+      state: started
+
+  - name: Start Unifi Network
+    ansible.builtin.systemd:
+      name: unifi
+      state: started

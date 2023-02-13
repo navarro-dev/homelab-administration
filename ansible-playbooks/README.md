@@ -1,5 +1,7 @@
 # How-To
 
+Note: Playbooks are intended for Ubuntu 22.04
+
 ## Running Playbooks
 `ansible-playbook <playbook>.yml -i <inventory_file> -K`
 
