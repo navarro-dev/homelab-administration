@@ -63,5 +63,5 @@ if [ $new_web_version -eq 1 ]; then
 fi
 
 if [ $new_web_version -eq 1 ]; then 
-    sendPiHoleDiscordMessage "Web Admin" "$FTL_BASE_URL" "${GITHUB_FTL_VERSION:=N/A}"
+    sendPiHoleDiscordMessage "FTL Engine" "$FTL_BASE_URL" "${GITHUB_FTL_VERSION:=N/A}"
 fi
