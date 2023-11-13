@@ -1,7 +1,10 @@
 ---
-  - hosts: initserver
+  - hosts: all
     become: yes
     tasks:
+    - name: Set Hostname
+      ansible.builtin.hostname:
+       name: "{{ inventory_hostname }}"
     - name: Update cache 
       apt:
        update_cache: yes
@@ -9,6 +12,7 @@
       apt:
         pkg:
           - jq
+          - vim
         state: latest
     - name: Upgrade all packages on servers
       apt: 
