@@ -1,0 +1,21 @@
+---
+  - hosts: pve
+    become: yes
+    tasks:
+    - name: Update cache 
+      apt:
+       update_cache: yes
+    - name: Install specified system packages
+      apt:
+        pkg:
+          - jq
+          - vim
+          - qemu-guest-agent
+        state: latest
+    - name: Upgrade all packages on servers
+      apt: 
+        name: "*"
+        state: latest
+    - name: set timezone
+      timezone:
+        name: America/Chicago
