@@ -2,6 +2,9 @@
   - hosts: pve
     become: yes
     tasks:
+    - name: Set Hostname
+      ansible.builtin.hostname:
+       name: "{{ inventory_hostname }}"
     - name: Update cache 
       apt:
        update_cache: yes
@@ -12,6 +15,7 @@
           - vim
           - qemu-guest-agent
         state: latest
+      register: result #flag to reboot server or not
     - name: Upgrade all packages on servers
       apt: 
         name: "*"
@@ -19,3 +23,6 @@
     - name: set timezone
       timezone:
         name: America/Chicago
+    - name: Reboot machine and send a message
+      ansible.builtin.reboot:
+      when: result is changed  
