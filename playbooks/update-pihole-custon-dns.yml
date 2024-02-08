@@ -1,25 +1,27 @@
 ---
-  - hosts: pihole
-    become: yes
-    tasks:
-    - name: Clone Pi-hole DNS List Repo 
+- name: Update Pi-hole custom DNS list
+  hosts: pihole
+  become: true
+  tasks:
+    - name: Clone Pi-hole DNS List Repo
       ansible.builtin.git:
-        repo: 'git@github.com:navarro-dev/pihole-dns-list.git'
+        repo: git@github.com:navarro-dev/pihole-dns-list.git
         dest: /tmp/pihole/
         accept_hostkey: true
         key_file: /home/minus/.ssh/id_rsa
+
     - name: Copy custom DNS list to Pi-hole folder
       ansible.builtin.copy:
         src: /tmp/pihole/custom.list
         dest: /etc/pihole/custom.list
-        mode: '0644'
+        mode: "0644"
         owner: root
         group: root
         remote_src: true
+
     - name: Restart the Pi-hole DNS Server
-      command: pihole restartdns reload
+      ansible.builtin.command: pihole restartdns reload
     - name: Clean Up Cloned Repo
       ansible.builtin.file:
         path: /tmp/pihole/
         state: absent
-            

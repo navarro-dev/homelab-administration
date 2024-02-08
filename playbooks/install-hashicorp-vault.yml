@@ -1,0 +1,39 @@
+---
+- name: Install Hashicorp Vault
+  hosts: vault
+  become: true
+  tasks:
+    - name: Install required system packages
+      ansible.builtin.apt:
+        pkg:
+          - gpg
+        state: present
+        update_cache: true
+
+    - name: Import HashiCorp key from url
+      ansible.builtin.apt_key:
+        state: present
+        url: https://apt.releases.hashicorp.com/gpg
+        id: 798AEC654E5C15428C8E42EEAA16FCBCA621E701
+        keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+    - name: Add HashiCorp repository
+      ansible.builtin.apt_repository:
+        state: present
+        filename: hashicorp
+        repo: deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
+        update_cache: true
+
+    - name: Install HashiCorp Vault
+      ansible.builtin.apt:
+        name: vault
+        state: present
+
+    - name: Daemon-reload to pick up config changes
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: Start Vault
+      ansible.builtin.systemd:
+        name: vault
+        state: started

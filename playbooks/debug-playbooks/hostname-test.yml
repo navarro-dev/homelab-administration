@@ -1,0 +1,12 @@
+---
+- name: Verify hostname variables
+  hosts: pve
+  become: true
+  tasks:
+    - name: What is my inventory_hostname
+      ansible.builtin.debug:
+        var: inventory_hostname
+
+    - name: Display all variables/facts known for a host
+      ansible.builtin.debug:
+        var: hostvars[inventory_hostname]

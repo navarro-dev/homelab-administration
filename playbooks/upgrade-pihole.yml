@@ -1,0 +1,7 @@
+---
+- name: Upgrade Pi-hole version
+  hosts: pihole
+  become: true
+  tasks:
+    - name: Update Pihole to latest version
+      ansible.builtin.command: pihole -up

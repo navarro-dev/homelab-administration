@@ -1,0 +1,42 @@
+---
+- name: Initialize Proxmox Ubuntu VM
+  hosts: pve
+  become: true
+  tasks:
+    - name: Set Hostname
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+
+    - name: Update cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install specified system packages
+      ansible.builtin.apt:
+        pkg:
+          - jq
+          - vim
+          - iputils-ping
+          - net-tools
+        state: present
+
+    - name: Install proxmox agent package
+      ansible.builtin.apt:
+        pkg:
+          - qemu-guest-agent
+        state: present
+      notify:
+        - Reboot server # reboot if proxmox agent is installed\changes
+
+    - name: Upgrade all packages on servers
+      ansible.builtin.apt:
+        name: "*"
+        state: present
+
+    - name: Set system timezone
+      community.general.timezone:
+        name: America/Chicago
+
+  handlers:
+    - name: Reboot server
+      ansible.builtin.reboot:
